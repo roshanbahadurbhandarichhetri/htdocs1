@@ -1,0 +1,121 @@
+CREATE TABLE `pizza` (
+  `pizza_id` int,
+  `pizza_name` varchar(50),
+  `pizza_descrip` varchar(100),
+  `size` varchar(1),
+  `base_price` decimal(6,2),
+  PRIMARY KEY (`pizza_id`)
+);
+
+CREATE TABLE `drink` (
+  `drink_id` int,
+  `drink_name` varchar(50),
+  `price` decimal(6,2),
+  PRIMARY KEY (`drink_id`)
+);
+
+CREATE TABLE `crust` (
+  `crust_id` int,
+  `crust_name` varchar(50),
+  `price` decimal(6,2),
+  PRIMARY KEY (`crust_id`)
+);
+
+CREATE TABLE `sauce` (
+  `sauce_id` int,
+  `sauce_name` varchar(50),
+  `price` decimal(6,2),
+  PRIMARY KEY (`sauce_id`)
+);
+
+CREATE TABLE `customTopping` (
+  `custom_topping_id` int,
+  `custom_pizza_id` int,
+  `topping_id` int,
+  PRIMARY KEY (`custom_topping_id`)
+);
+
+CREATE TABLE `customPizza` (
+  `custom_pizza_id` int,
+  `crust_id` int,
+  `sauce_id` int,
+  `size` varchar(1),
+  `base_price` decimal(6,2),
+  PRIMARY KEY (`custom_pizza_id`),
+  FOREIGN KEY (`crust_id`) REFERENCES `crust`(`crust_id`),
+  FOREIGN KEY (`sauce_id`) REFERENCES `sauce`(`sauce_id`)
+);
+
+CREATE TABLE `customer` (
+  `customer_id` int,
+  `name` varchar(100),
+  `email` varchar(100),
+  `phone` varchar(15),
+  `address` varchar(100),
+  `password` varchar(100),
+  PRIMARY KEY (`customer_id`)
+);
+
+CREATE TABLE `payment` (
+  `payment_id` int,
+  `payment_method` varchar(50),
+  `payment_status` varchar(50),
+  `payment_date` datetime,
+  `amount_paid` decimal(6,2),
+  PRIMARY KEY (`payment_id`)
+);
+
+CREATE TABLE `employee` (
+  `employee_id` int,
+  `name` varchar(100),
+  `username` varchar(100),
+  `password` varchar(100),
+  `role` varchar(100),
+  PRIMARY KEY (`employee_id`)
+);
+
+CREATE TABLE `status` (
+  `status_id` int,
+  `employee_id` int,
+  `status` varchar(100),
+  `date_time` timestamp,
+  PRIMARY KEY (`status_id`),
+  FOREIGN KEY (`employee_id`) REFERENCES `employee`(`employee_id`)
+);
+
+CREATE TABLE `customerOrder` (
+  `order_id` int,
+  `customer_id` int,
+  `payment_id` int,
+  `status_id` int,
+  `order_date` datetime,
+  `total_price` decimal(6,2),
+  `delivery_method` varchar(50),
+  PRIMARY KEY (`order_id`),
+  FOREIGN KEY (`customer_id`) REFERENCES `customer`(`customer_id`),
+  FOREIGN KEY (`payment_id`) REFERENCES `payment`(`payment_id`),
+  FOREIGN KEY (`status_id`) REFERENCES `status`(`status_id`)
+);
+
+CREATE TABLE `orderItem` (
+  `order_item_id` int,
+  `order_id` int,
+  `pizza_id` int,
+  `custom_pizza_id` int,
+  `drink_id` int,
+  `quantity` int,
+  `subtotal` decimal(6,2),
+  PRIMARY KEY (`order_item_id`),
+  FOREIGN KEY (`pizza_id`) REFERENCES `pizza`(`pizza_id`),
+  FOREIGN KEY (`drink_id`) REFERENCES `drink`(`drink_id`),
+  FOREIGN KEY (`custom_pizza_id`) REFERENCES `customPizza`(`custom_pizza_id`),
+  FOREIGN KEY (`order_id`) REFERENCES `customerOrder`(`order_id`)
+);
+
+CREATE TABLE `topping` (
+  `topping_id` int,
+  `topping_name` varchar(50),
+  `price` decimal(6,2),
+  PRIMARY KEY (`topping_id`)
+);
+

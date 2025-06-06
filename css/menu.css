@@ -1,0 +1,131 @@
+/* General container */
+.menu-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Main heading */
+.menu-container h1 {
+  text-align: center;
+  color: #e63946;
+  margin-bottom: 40px;
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+/* Section headings */
+.menu-container h2 {
+  color: #457b9d;
+  border-bottom: 2px solid #e63946;
+  padding-bottom: 5px;
+  margin-bottom: 30px;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+/* Individual menu items */
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+/* Pizza image styling */
+.menu-image {
+  width: 180px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+/* Item title */
+.menu-item h3 {
+  margin: 0 0 8px 0;
+  color: #e63946;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* Energy info */
+.energy {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2a2a2a;
+  margin-bottom: 5px;
+}
+
+/* Codes */
+.codes {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+/* Description */
+.description {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .menu-container {
+    padding: 0 10px;
+  }
+
+  .menu-container h1 {
+    font-size: 2rem;
+  }
+
+  .menu-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .menu-item h3 {
+    font-size: 1.2rem;
+  }
+
+  .menu-image {
+    width: 130px; /* Slightly smaller on small screens */
+  }
+}
+/* Add to Cart button */
+.add-to-cart {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #e63946;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background-color: #d62828;
+}
+.view-cart-container {
+  text-align: right;
+  margin: 10px;
+}
+
+.view-cart-button {
+  background-color: #e63946;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+}

@@ -1,0 +1,142 @@
+/* CUSTOMIZE PAGE STYLING */
+
+body {
+  background: #fff8f5;
+  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+
+.customize-page {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.page-title {
+  width: 100%;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #d14424;
+}
+
+.customize-form {
+  flex: 1 1 60%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.customize-form img.pizza-image {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.customize-form label {
+  display: block;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+.customize-form select,
+.customize-form input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+
+.toppings-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.toppings-list label {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+}
+
+.toppings-list input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #d14424;
+  color: #fff;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #b8371e;
+}
+
+/* ORDER SUMMARY */
+.order-summary {
+  flex: 1 1 30%;
+  background: #fff4ec;
+  border: 1px solid #ffd8c4;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.order-summary h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #d14424;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.summary-total {
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #222;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .customize-page {
+    flex-direction: column;
+  }
+
+  .customize-form,
+  .order-summary {
+    width: 100%;
+  }
+
+  .toppings-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
