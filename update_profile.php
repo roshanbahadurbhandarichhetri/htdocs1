@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $pdo->beginTransaction();
       
       // Check if email exists for another user
-      $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
+      $stmt = $pdo->prepare("SELECT customer_id FROM customer WHERE email = ? AND customer_id != ?");
       $stmt->execute([$email, $userId]);
       if ($stmt->fetch()) {
         $error = "This email is already used by another account.";
@@ -52,12 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->rollBack();
           } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?");
+            $stmt = $pdo->prepare("UPDATE customer SET name = ?, email = ?, password = ? WHERE customer_id = ?");
             $stmt->execute([$fullname, $email, $hashed_password, $userId]);
           }
         } else {
           // Update without changing password
-          $stmt = $pdo->prepare("UPDATE users SET name = ?, email = ? WHERE id = ?");
+          $stmt = $pdo->prepare("UPDATE customer SET name = ?, email = ? WHERE customer_id = ?");
           $stmt->execute([$fullname, $email, $userId]);
         }
         
