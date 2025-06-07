@@ -225,9 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'Large' => 10.99
             ],
         ],
-    ];
-
-    if (isset($_POST['name'])) {
+    ];    if (isset($_POST['name'])) {
         $name = $_POST['name'];
     } elseif (isset($_POST['item_name'])) {
         $name = $_POST['item_name'];
@@ -237,7 +235,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Get selected size (default to Medium if not specified)
     $size = isset($_POST['size']) ? $_POST['size'] : 'Medium';
-
+    
+    // Fetch the correct price from the database based on the pizza name and size
+    require_once 'include/db.php';
+    
+    // Default prices in case we can't find it in the database
+    $defaultPrices = [
+        'Small' => 15.99,
+        'Medium' => 18.99,
+        'Large' => 20.99
+    ];
+    
+    $itemPrice = $defaultPrices[$size];
+    
+    // Map our size names to the database size codes
+    $sizeMap = [
+        'Small' => 'S',
+        'Medium' => 'M',
+        'Large' => 'L',
+        'Extra Large' => 'X'
+    ];
+    
+    $dbSize = $sizeMap[$size] ?? 'L';
+    
+    // Try to get the price from the database
+    $stmt = $conn->prepare("SELECT base_price FROM pizza WHERE pizza_name = ? AND size = ?");
+    $stmt->bind_param("ss", $name, $dbSize);
+    $stmt->execute();
+    $result = $stmt->get_result();
+      if ($result && $row = $result->fetch_assoc()) {
+        $itemPrice = $row['base_price'];
+    }
+    
+    // Prepare the item for cart
     if (isset($menuItems[$name])) {
         // Use menu item data for predefined pizzas
         $itemData = $menuItems[$name];
@@ -248,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'toppings' => $itemData['toppings'],
             'size' => $size,
             'quantity' => max(1, intval($_POST['quantity'] ?? 1)),
-            'price' => $itemData['price'][$size],
+            'price' => $itemPrice,
         ];
     } else {
         // Fallback for custom pizzas or incomplete data
@@ -259,7 +289,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'size' => $size,
             'toppings' => isset($_POST['toppings']) && is_array($_POST['toppings']) ? $_POST['toppings'] : [],
             'quantity' => max(1, intval($_POST['quantity'] ?? 1)),
-            'price' => floatval($_POST['price'] ?? 0),
+            'price' => $itemPrice,
         ];
     }
 

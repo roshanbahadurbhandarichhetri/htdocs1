@@ -33,39 +33,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   } else {
     $message = filter_var($_POST["message"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   }
-  
-  // If no errors, proceed with storing the contact message
+    // If no errors, proceed with storing the contact message
   if (empty($nameErr) && empty($emailErr) && empty($messageErr)) {
-    // Check if contacts table exists, if not create it
-    $checkTable = "SHOW TABLES LIKE 'contacts'";
-    $tableExists = $conn->query($checkTable);
-    
-    if ($tableExists->num_rows == 0) {
-      // Create the contacts table
-      $createTable = "CREATE TABLE contacts (
-        id INT(11) AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        message TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )";
+    try {
+      // Check if contacts table exists, if not create it
+      $checkTable = "SHOW TABLES LIKE 'contacts'";
+      $tableExists = $conn->query($checkTable);
+      
+      if ($tableExists->num_rows == 0) {
+        // Create the contacts table
+        $createTable = "CREATE TABLE contacts (
+          id INT(11) AUTO_INCREMENT PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          email VARCHAR(255) NOT NULL,
+          message TEXT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )";
+        
+        if (!$conn->query($createTable)) {
+          throw new Exception("Error creating contacts table: " . $conn->error);
+        }
+      }
       
       $conn->query($createTable);
     }
-    
-    // Insert message into database
-    $stmt = $conn->prepare("INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $name, $email, $message);
-    
-    if ($stmt->execute()) {
-      $success = true;
-      // Reset form fields after successful submission
-      $name = $email = $message = "";
-    } else {
-      $error = "Sorry, there was an error sending your message. Please try again.";
+      try {
+      // Insert message into database
+      $stmt = $conn->prepare("INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)");
+      $stmt->bind_param("sss", $name, $email, $message);
+      
+      if ($stmt->execute()) {
+        $success = true;
+        // Reset form fields after successful submission
+        $name = $email = $message = "";
+      } else {
+        throw new Exception("Error inserting message: " . $stmt->error);
+      }
+      
+      $stmt->close();
+    } catch (Exception $e) {
+      $error = "Sorry, there was an error sending your message: " . $e->getMessage() . ". Please try again.";
     }
-    
-    $stmt->close();
   } else {
     $error = "Please fix the errors in the form.";
   }

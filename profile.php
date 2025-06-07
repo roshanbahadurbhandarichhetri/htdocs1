@@ -7,6 +7,12 @@ if (!isset($_SESSION['user_id'])) {
   exit;
 }
 
+// Verify user role (optional - if you want to restrict to only customers)
+if (isset($_SESSION['role']) && $_SESSION['role'] !== 'customer') {
+  header("Location: customer/signup_login.php?error=access_denied");
+  exit;
+}
+
 // Fetch user data from database
 require_once 'config.php';
 $userId = $_SESSION['user_id'];

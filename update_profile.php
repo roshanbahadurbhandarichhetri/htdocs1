@@ -25,11 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Validate and sanitize input
   $fullname = trim(filter_input(INPUT_POST, 'fullname', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
   $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
+  $phone = trim(filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+  $address = trim(filter_input(INPUT_POST, 'address', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
   $password = $_POST['password'] ?? '';
   
   // Validate inputs
-  if (empty($fullname) || empty($email)) {
-    $error = "Name and email are required.";
+  if (empty($fullname) || empty($email) || empty($phone) || empty($address)) {
+    $error = "Name, email, phone and address are required.";
   } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $error = "Please enter a valid email address.";
   } else {
@@ -52,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->rollBack();
           } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("UPDATE customer SET name = ?, email = ?, password = ? WHERE customer_id = ?");
-            $stmt->execute([$fullname, $email, $hashed_password, $userId]);
+            $stmt = $pdo->prepare("UPDATE customer SET name = ?, email = ?, phone = ?, address = ?, password = ? WHERE customer_id = ?");
+            $stmt->execute([$fullname, $email, $phone, $address, $hashed_password, $userId]);
           }
         } else {
           // Update without changing password
-          $stmt = $pdo->prepare("UPDATE customer SET name = ?, email = ? WHERE customer_id = ?");
-          $stmt->execute([$fullname, $email, $userId]);
+          $stmt = $pdo->prepare("UPDATE customer SET name = ?, email = ?, phone = ?, address = ? WHERE customer_id = ?");
+          $stmt->execute([$fullname, $email, $phone, $address, $userId]);
         }
         
         if (!$error) {

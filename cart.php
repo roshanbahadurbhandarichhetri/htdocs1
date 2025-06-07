@@ -39,10 +39,11 @@
             <td><?= htmlspecialchars($item['name']) ?></td>
             <td><?= htmlspecialchars($item['size'] ?? 'Medium') ?></td>
             <td><?= htmlspecialchars($item['base']) ?></td>
-            <td><?= htmlspecialchars($item['sauce']) ?></td>
-            <td>
+            <td><?= htmlspecialchars($item['sauce']) ?></td>            <td>
               <?php if (isset($item['toppings']) && is_array($item['toppings']) && !empty($item['toppings'])): ?>
-                <?= htmlspecialchars(implode(', ', $item['toppings'])) ?>
+                <div class="toppings-list">
+                  <?= htmlspecialchars(implode(', ', $item['toppings'])) ?>
+                </div>
               <?php else: ?>
                 None
               <?php endif; ?>

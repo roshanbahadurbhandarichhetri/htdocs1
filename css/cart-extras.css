@@ -43,3 +43,18 @@
   border: 1px solid #ddd;
   background-color: #f9f9f9;
 }
+
+/* Toppings list styling */
+.toppings-list {
+  max-height: 100px;
+  overflow-y: auto;
+  font-size: 0.9em;
+  line-height: 1.4;
+  padding-right: 5px;
+}
+
+/* Make sure long toppings lists don't break the table layout */
+.cart-table td {
+  max-width: 250px;
+  vertical-align: top;
+}
